@@ -9,15 +9,7 @@ const db = {
       cards: [],
     },
   ],
-  monsters: [
-    {
-      id: "monster-0",
-      name: "Monster 1",
-      health: 50,
-      image: "",
-      attacks: [],
-    },
-  ],
+  monsters: [],
   attacks: [
     {
       id: "attack-0",

@@ -75,10 +75,6 @@ let idCountUser = db.users.length;
 let idCountMonster = db.monsters.length;
 let idCountAttack = db.attacks.length;
 
-const Log = (thang) => {
-  console.log(thang, "THANG");
-};
-
 const resolvers = {
   Query: {
     user: (_, { id }) => db.users.find((user) => user.id === id),
@@ -87,8 +83,7 @@ const resolvers = {
     monsters: () => db.monsters,
     attack: (_, { id }) => db.attacks.find((attack) => attack.id === id),
     attacks: () => db.attacks,
-    getMonstersByUser: () => (_, { id }) => {
-      Log();
+    getMonstersByUser: (_, { id }) => {
       return db.monsters.filter((user) => user.createdBy === id);
     },
   },

@@ -9,7 +9,13 @@ const db = {
       cards: [],
     },
   ],
-  monsters: [],
+  monsters: [
+    {
+      name: "Test Monster",
+      id: "monster-0",
+      createdBy: "user-0",
+    },
+  ],
   attacks: [
     {
       id: "attack-0",
@@ -27,6 +33,7 @@ const typeDefs = `
     monster(id: ID!): Monster
     attacks: [Attacks]
     attack(id: ID!): Attacks
+    getMonstersByUser(id: ID!): [Monster]
   }
 
   type User { 
@@ -40,6 +47,7 @@ const typeDefs = `
     name: String
     health: Int
     image: String
+    createdBy: ID
     attacks: [Attacks]
   }
 
@@ -67,6 +75,10 @@ let idCountUser = db.users.length;
 let idCountMonster = db.monsters.length;
 let idCountAttack = db.attacks.length;
 
+const Log = (thang) => {
+  console.log(thang, "THANG");
+};
+
 const resolvers = {
   Query: {
     user: (_, { id }) => db.users.find((user) => user.id === id),
@@ -75,6 +87,10 @@ const resolvers = {
     monsters: () => db.monsters,
     attack: (_, { id }) => db.attacks.find((attack) => attack.id === id),
     attacks: () => db.attacks,
+    getMonstersByUser: () => (_, { id }) => {
+      Log();
+      return db.monsters.filter((user) => user.createdBy === id);
+    },
   },
   Mutation: {
     createUser: (parent, args) => {

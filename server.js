@@ -1,5 +1,7 @@
 const { ApolloServer } = require("apollo-server");
 const { makeExecutableSchema } = require("graphql-tools");
+const express = require("express");
+const wakeUpDyno = require("./wakeNodeServer.js");
 
 const db = {
   users: [],
@@ -81,7 +83,7 @@ const resolvers = {
       const newUser = {
         id: args.id,
         name: args.name,
-        email: args.email
+        email: args.email,
       };
       db.users.push(newUser);
       return newUser;
@@ -119,6 +121,12 @@ const app = new ApolloServer({
   schema,
 });
 
-app.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-  console.log(`🚀 Server ready at ${url} `);
-});
+const PORT = 4000;
+const DYNO_URL = "https://battle-creator.herokuapp.com/"; // the url of your dyno
+
+app.listen(PORT, () => {
+  wakeUpDyno(DYNO_URL); // will start once server starts
+})
+// app.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+//   console.log(`🚀 Server ready at ${url} `);
+// });

@@ -2,20 +2,8 @@ const { ApolloServer } = require("apollo-server");
 const { makeExecutableSchema } = require("graphql-tools");
 
 const db = {
-  users: [
-    {
-      id: "user-0",
-      name: "Shawn",
-      cards: [],
-    },
-  ],
-  monsters: [
-    {
-      name: "Test Monster",
-      id: "monster-0",
-      createdBy: "user-0",
-    },
-  ],
+  users: [],
+  monsters: [],
   attacks: [
     {
       id: "attack-0",
@@ -37,8 +25,9 @@ const typeDefs = `
   }
 
   type User { 
-    id: ID
+    id: String
     name: String
+    email: String
     cards: [Monster]
   }
 
@@ -47,7 +36,7 @@ const typeDefs = `
     name: String
     health: Int
     image: String
-    createdBy: ID
+    createdBy: String
     attacks: [Attacks]
   }
 
@@ -65,8 +54,8 @@ const typeDefs = `
 
 
   type Mutation {
-    createUser(name: String): User
-    createMonster(name: String, health: Int, image: String): Monster
+    createUser(name: String, id: String, email: String): User
+    createMonster(name: String, health: Int, image: String, createdBy: String): Monster
     createAttack(name: String, dmg: Int): Attacks
   }
 `;
@@ -90,8 +79,9 @@ const resolvers = {
   Mutation: {
     createUser: (parent, args) => {
       const newUser = {
-        id: `user-${idCountUser++}`,
+        id: args.id,
         name: args.name,
+        email: args.email
       };
       db.users.push(newUser);
       return newUser;
@@ -103,6 +93,7 @@ const resolvers = {
         health: args.health,
         image: args.image,
         attacks: args.attacks,
+        createdBy: args.createdBy,
       };
       db.monsters.push(newMonster);
       return newMonster;

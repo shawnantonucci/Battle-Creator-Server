@@ -21,7 +21,7 @@ const typeDefs = `
     monster(id: ID!): Monster
     attacks: [Attacks]
     attack(id: ID!): Attacks
-    getMonstersByUser(id: ID!): [Monster]
+    getMonstersByUser(id: String): [Monster]
   }
 
   type User { 
